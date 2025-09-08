@@ -2,7 +2,6 @@ import sys
 import os
 import pandas as pd
 
-# Adiciona o diretório raiz do projeto ao sys.path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(project_root)
 
@@ -16,8 +15,6 @@ def load_data():
     db: Session = SessionLocal()
 
     try:
-        # --- CORREÇÃO 1: CRIAR MANTENEDORA PADRÃO ---
-        # Como o CSV não tem a mantenedora, criamos uma para associar a todas as IES.
         nome_mantenedora_padrao = "Mantenedora Padrão (Dados não disponíveis no CSV)"
         mantenedora_padrao = db.query(Mantenedora).filter(Mantenedora.nome == nome_mantenedora_padrao).first()
         if not mantenedora_padrao:
@@ -30,8 +27,6 @@ def load_data():
         
         print("Lendo o arquivo CSV...")
         csv_path = os.path.join(project_root, 'ies_data.csv')
-        
-        # --- CORREÇÃO 2: MUDAR O DELIMITADOR PARA VÍRGULA ---
         df = pd.read_csv(csv_path, delimiter=',', encoding='latin1')
         
         total_rows = len(df)
@@ -41,11 +36,14 @@ def load_data():
             if (index + 1) % 100 == 0:
                 print(f"Processando linha {index + 1}/{total_rows}...")
 
-            # --- CORREÇÃO 3: USAR OS NOMES DE COLUNA CORRETOS ---
             nome_ies = row['NOME_DA_IES']
             sigla_ies = row['SIGLA']
+            
+            # <<< INÍCIO DA MODIFICAÇÃO >>>
+            municipio_ies = row['MUNICIPIO']
+            uf_ies = row['UF']
+            # <<< FIM DA MODIFICAÇÃO >>>
 
-            # Verifica se a instituição já existe para evitar duplicatas
             db_instituicao = db.query(Instituicao).filter_by(
                 nome=nome_ies, 
                 sigla=sigla_ies
@@ -55,7 +53,11 @@ def load_data():
                 nova_instituicao = Instituicao(
                     nome=nome_ies,
                     sigla=sigla_ies,
-                    mantenedora_id=mantenedora_id_padrao # Usa o ID da mantenedora padrão
+                    # <<< INÍCIO DA MODIFICAÇÃO >>>
+                    municipio=municipio_ies,
+                    uf=uf_ies,
+                    # <<< FIM DA MODIFICAÇÃO >>>
+                    mantenedora_id=mantenedora_id_padrao
                 )
                 db.add(nova_instituicao)
 

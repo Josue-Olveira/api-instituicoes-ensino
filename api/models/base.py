@@ -19,7 +19,6 @@ class Mantenedora(Base):
     id = Column(Integer, primary_key=True, index=True)
     nome = Column(String, unique=True, index=True)
     
-    # Relacionamento 1:N -> Uma mantenedora pode ter várias instituições
     instituicoes = relationship("Instituicao", back_populates="mantenedora", cascade="all, delete-orphan")
 
 class Instituicao(Base):
@@ -27,7 +26,12 @@ class Instituicao(Base):
     id = Column(Integer, primary_key=True, index=True)
     nome = Column(String, index=True)
     sigla = Column(String, index=True)
+    
+    # <<< INÍCIO DA MODIFICAÇÃO >>>
+    municipio = Column(String, index=True)
+    uf = Column(String(2), index=True) # UF tem sempre 2 caracteres
+    # <<< FIM DA MODIFICAÇÃO >>>
+    
     mantenedora_id = Column(Integer, ForeignKey("mantenedoras.id"))
     
-    # Relacionamento N:1 -> A instituição pertence a uma mantenedora
     mantenedora = relationship("Mantenedora", back_populates="instituicoes")
