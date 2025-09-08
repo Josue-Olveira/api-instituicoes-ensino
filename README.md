@@ -1,3 +1,4 @@
+
 # API de Instituições de Ensino Superior - Brasil
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge&logo=python&logoColor=white)
@@ -111,5 +112,3 @@ Para uma suíte de testes completa, utilize o **Postman**. Os arquivos de coleç
 
 Desenvolvido por **[SEU NOME COMPLETO]**.
 
-* **LinkedIn:** `https://www.linkedin.com/in/seu-usuario/`
-* **GitHub:** `https://github.com/seu-usuario`
