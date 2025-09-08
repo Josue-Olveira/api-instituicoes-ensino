@@ -1,23 +1,34 @@
-
 # API de Instituições de Ensino Superior - Brasil
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green?style=for-the-badge&logo=fastapi&logoColor=white)
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0+-red?style=for-the-badge&logo=sqlalchemy&logoColor=white)
 
-Este projeto consiste em uma API RESTful desenvolvida como parte da **Entrega 1 – ESTRUTURA INICIAL DA API COM SQLITE**. A aplicação utiliza dados públicos do portal [dados.gov.br](http://dados.gov.br) sobre o Cadastro de Instituições de Ensino Superior (IES) para fornecer endpoints seguros e bem documentados para consulta e manipulação de dados.
+### **Introdução**
 
-O objetivo principal foi construir uma base estrutural robusta, com foco em boas práticas de desenvolvimento, organização de código, autenticação segura via JWT e documentação automática.
+Este relatório apresenta a arquitetura e implementação de uma API RESTful, desenvolvida para servir como a base estrutural de uma aplicação de software moderna. O projeto, parte da "Entrega 1", utiliza o ecossistema tecnológico de Python com FastAPI, SQLAlchemy e SQLite para transformar um conjunto de dados públicos em um serviço web interativo, seguro e bem documentado.
+
+A fonte de dados selecionada foi o "Cadastro de Instituições de Ensino Superior (IES)" do portal `dados.gov.br`, um repositório rico de informações sobre o cenário educacional brasileiro. A API abstrai a complexidade desses dados, oferecendo endpoints intuitivos para consulta e manipulação, protegidos por um sistema de autenticação e autorização baseado em tokens JWT. O desenvolvimento foi guiado por princípios de código limpo, separação de responsabilidades e automação, resultando em uma aplicação estável e pronta para futuras expansões.
+
+### **Aplicações e Casos de Uso**
+
+Uma API como esta serve de alicerce para diversas aplicações práticas. Seu propósito principal é permitir que outros sistemas consumam e utilizem os dados de IES de forma programática, possibilitando a criação de:
+
+* **Portais Web Educacionais:** Sites que permitem a estudantes pesquisar, filtrar e comparar instituições por estado (UF), município, nome ou sigla.
+* **Aplicativos Móveis:** Ferramentas para que futuros universitários encontrem informações sobre faculdades e universidades diretamente de seus celulares.
+* **Painéis de Análise de Dados (Dashboards):** Plataformas para pesquisadores ou gestores públicos visualizarem a distribuição e as características das instituições de ensino no país.
+* **Integração com outros Sistemas:** A API pode ser usada para alimentar outros softwares que necessitem de uma fonte de dados validada e consistente sobre as IES do Brasil.
 
 ## ✨ Principais Funcionalidades
 
 * **Autenticação JWT:** Sistema de login seguro que gera tokens de acesso para consumo da API.
 * **Autorização baseada em Perfis (Roles):** Distinção entre usuários `admin` (com permissão de escrita) e `leitor` (permissão apenas para leitura).
+* **Filtros Dinâmicos:** Filtragem da lista de instituições por `nome`, `sigla`, `municipio` e `uf` via query parameters.
 * **Endpoints RESTful:** Rotas para criação e listagem de Instituições e suas Mantenedoras.
-* **Banco de Dados com SQLAlchemy ORM:** Abstração da comunicação com o banco de dados SQLite para uma manipulação de dados mais simples e segura.
-* **Validação de Dados com Pydantic:** Modelos de validação que garantem a integridade dos dados que entram e saem da API.
-* **Documentação Automática:** Geração automática de documentação interativa com Swagger UI (`/docs`) e ReDoc (`/redoc`).
-* **Script de Carga de Dados:** Um script utilitário para popular o banco de dados a partir do arquivo CSV original.
+* **Banco de Dados com SQLAlchemy ORM:** Abstração da comunicação com o banco de dados SQLite.
+* **Validação de Dados com Pydantic:** Modelos que garantem a integridade dos dados que entram e saem da API.
+* **Documentação Automática:** Geração de documentação interativa com Swagger UI (`/docs`).
+* **Script de Carga de Dados:** Utilitário para popular o banco de dados a partir do arquivo CSV original.
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -25,13 +36,11 @@ O objetivo principal foi construir uma base estrutural robusta, com foco em boas
 * **Banco de Dados:** SQLite
 * **ORM:** SQLAlchemy
 * **Validação de Dados:** Pydantic
-* **Segurança:** Passlib (para hashing de senhas), Python-Jose (para JWT)
+* **Segurança:** Passlib, Python-Jose (JWT)
 * **Processamento de Dados (Script):** Pandas
 * **Testes:** Postman
 
 ## 📂 Estrutura do Projeto
-
-O projeto segue uma estrutura organizada por camadas para facilitar a manutenção e escalabilidade:
 
 /
 ├── api/
@@ -41,17 +50,15 @@ O projeto segue uma estrutura organizada por camadas para facilitar a manutenç�
 │   └── schemas/      # Modelos de validação do Pydantic
 ├── scripts/
 │   └── load_data.py  # Script para popular o banco de dados
-├── .gitignore        # Arquivos e pastas a serem ignorados pelo Git
-├── ies.db            # Arquivo do banco de dados SQLite
-├── ies_data.csv      # Arquivo de dados brutos
+├── .gitignore
+├── ies.db
+├── ies_data.csv
 ├── main.py           # Ponto de entrada da aplicação FastAPI
 ├── README.md         # Este arquivo
-└── requirements.txt  # Lista de dependências do projeto
+└── requirements.txt
 
 
 ## 🚀 Como Executar o Projeto Localmente
-
-Siga os passos abaixo para configurar e executar a aplicação no seu ambiente local.
 
 ### **Pré-requisitos**
 * [Python 3.11+](https://www.python.org/downloads/)
@@ -70,10 +77,6 @@ Siga os passos abaixo para configurar e executar a aplicação no seu ambiente l
     # Windows
     python -m venv venv
     .\venv\Scripts\activate
-
-    # Linux / macOS
-    python3 -m venv venv
-    source venv/bin/activate
     ```
 
 3.  **Instale as dependências:**
@@ -96,31 +99,14 @@ Siga os passos abaixo para configurar e executar a aplicação no seu ambiente l
 
 ## 📚 Documentação da API
 
-Após iniciar o servidor, a documentação interativa gerada pelo Swagger UI estará disponível no seguinte endereço:
+Após iniciar o servidor, a documentação interativa gerada pelo Swagger UI estará disponível em:
 
 ➡️ **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
 
-Lá, você pode visualizar todos os endpoints, seus schemas e testá-los diretamente pelo navegador.
-
-### **Endpoints Principais**
-
-| Método HTTP | Endpoint                        | Descrição                                         | Protegido? | Permissão Necessária |
-|-------------|---------------------------------|---------------------------------------------------|------------|----------------------|
-| `POST`      | `/users/`                       | Cria um novo usuário (`admin` ou `leitor`).       | Não        | N/A                  |
-| `POST`      | `/token`                        | Autentica um usuário e retorna um token JWT.      | Não        | N/A                  |
-| `GET`       | `/api/instituicoes/`            | Lista todas as instituições de ensino.            | Não        | N/A                  |
-| `POST`      | `/api/instituicoes/`            | Cria uma nova instituição de ensino.              | **Sim** | `admin`              |
-| `GET`       | `/api/mantenedoras/`            | Lista todas as mantenedoras.                      | Não        | N/A                  |
-| `POST`      | `/api/mantenedoras/`            | Cria uma nova mantenedora.                        | **Sim** | `admin`              |
-
 ## 🧪 Como Testar
 
-Para uma suíte de testes completa, utilize o **Postman**. Os arquivos de coleção e ambiente podem ser solicitados ao autor ou criados seguindo a documentação.
+Para uma suíte de testes completa, utilize o **Postman**. Os arquivos de coleção e ambiente (`.json`) devem ser importados no aplicativo para executar o fluxo de testes que valida a criação de usuários, login, acesso a rotas públicas e o bloqueio de acesso a rotas protegidas.
 
 ## ✒️ Autor
 
-Desenvolvido por **[Josue Oliveira de Castro]**.
-
-## ✒️ Autor
-
-Desenvolvido por **Josue Oliveira de CAstro**.
+Desenvolvido por **[Josué Oliveira de Castro]**.
