@@ -118,4 +118,5 @@ Para uma suíte de testes completa, utilize o **Postman**. Os arquivos de coleç
 
 ## ✒️ Autor
 
-Desenvolvido por **[SEU NOME COMPLETO]**.
+Desenvolvido por **Josue Oliveira de CAstro**.
+
