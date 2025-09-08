@@ -86,7 +86,6 @@ Uma API como esta serve de alicerce para diversas aplicações práticas. Seu pr
 
 4.  **Popule o Banco de Dados:**
     * Baixe o arquivo `CSV` do [portal de dados abertos](https://dados.gov.br/dados/conjuntos-dados/sistema-e-mec---instituicoes-de-educacao-superior-do-brasil) e salve-o na raiz do projeto com o nome `ies_data.csv`.
-    * Em caso de erro: https://dados.gov.br/dados/conjuntos-dados/sistema-e-mec---instituicoes-de-educacao-superior-do-brasil
     * Execute o script de carga:
     ```bash
     python scripts/load_data.py
