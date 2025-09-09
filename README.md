@@ -60,53 +60,73 @@ Uma API como esta serve de alicerce para diversas aplicações práticas. Seu pr
 
 ## 🚀 Como Executar o Projeto Localmente
 
+Siga os passos abaixo para configurar e executar a aplicação no seu ambiente local.
+
 ### **Pré-requisitos**
-* [Python 3.11+](https://www.python.org/downloads/)
-* [Git](https://git-scm.com/downloads/)
+* **Python 3.11+:** Verifique sua versão com `python --version`.
+* **Git:** Verifique sua versão com `git --version`.
 
-### **Instalação**
+### **Guia de Instalação Detalhado**
 
-1.  **Clone o repositório:**
-    ```bash
-    git clone [https://docs.github.com/pt/repositories/creating-and-managing-repositories/quickstart-for-repositories](https://docs.github.com/pt/repositories/creating-and-managing-repositories/quickstart-for-repositories)
-    cd [NOME-DA-PASTA-DO-REPOSITÓRIO]
-    ```
+**1. Clone o Repositório**
+Abra seu terminal (PowerShell, CMD, etc.) e execute os comandos:
+```bash
+git clone [https://docs.github.com/pt/repositories/creating-and-managing-repositories/quickstart-for-repositories](https://docs.github.com/pt/repositories/creating-and-managing-repositories/quickstart-for-repositories)
+cd [NOME-DA-PASTA-DO-REPOSITÓRIO]
+2. Crie e Ative o Ambiente Virtual (venv)
+Este passo cria uma "caixa" isolada para as dependências do projeto.
 
-2.  **Crie e ative um ambiente virtual:**
-    ```bash
-    # Windows
-    python -m venv venv
-    .\venv\Scripts\activate
-    ```
+PowerShell
 
-3.  **Instale as dependências:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+# 1. Crie o ambiente
+python -m venv venv
 
-4.  **Popule o Banco de Dados:**
-    * Baixe o arquivo `CSV` do [portal de dados abertos](https://dados.gov.br/dados/conjuntos-dados/sistema-e-mec---instituicoes-de-educacao-superior-do-brasil) e salve-o na raiz do projeto com o nome `ies_data.csv`.
-    * Execute o script de carga:
-    ```bash
-    python scripts/load_data.py
-    ```
+# 2. Ative o ambiente
+# No Windows (PowerShell):
+.\venv\Scripts\activate
+Solução de Problemas Comuns (Windows): Se você receber um erro de UnauthorizedAccess ou "execução de scripts foi desabilitada", execute o seguinte comando uma vez para permitir a ativação e tente novamente:
 
-5.  **Inicie o Servidor da API:**
-    ```bash
-    uvicorn main:app --reload
-    ```
-    O servidor estará disponível em `http://127.0.0.1:8000`.
+PowerShell
 
-## 📚 Documentação da API
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+Ao ativar, o nome (venv) deve aparecer no início da linha do seu terminal.
 
+3. Instale as Dependências
+Com o ambiente (venv) ativo, instale todas as bibliotecas necessárias.
+
+Bash
+
+pip install -r requirements.txt
+Solução de Problemas Comuns: Se ocorrer um erro, verifique sua conexão com a internet. Ocasionalmente, pode ser necessário instalar as "Microsoft C++ Build Tools" se alguma biblioteca exigir compilação.
+
+4. Prepare e Carregue os Dados
+A API precisa dos dados do governo para funcionar.
+
+Baixe o arquivo CSV do portal de dados abertos.
+
+Salve o arquivo na raiz do projeto com o nome exato: ies_data.csv.
+
+Execute o script de carga para popular o banco de dados:
+
+Bash
+
+python scripts/load_data.py
+Solução de Problemas Comuns: Se ocorrer um erro FileNotFoundError, confirme que o arquivo ies_data.csv está na pasta raiz e com o nome correto. Se ocorrer um KeyError, verifique se o delimitador (separador) no script corresponde ao do arquivo (vírgula ou ponto e vírgula).
+
+5. Inicie o Servidor da API
+Finalmente, inicie o servidor FastAPI.
+
+Bash
+
+uvicorn main:app --reload
+Solução de Problemas Comuns: Se você receber um erro de uvicorn: comando não encontrado, significa que seu ambiente virtual não está ativo. Volte para o Passo 2 e ative-o.
+
+O servidor estará disponível em http://127.0.0.1:8000.
+
+📚 Documentação da API
 Após iniciar o servidor, a documentação interativa gerada pelo Swagger UI estará disponível em:
 
-➡️ **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
+➡️ http://127.0.0.1:8000/docs
 
-## 🧪 Como Testar
-
-Para uma suíte de testes completa, utilize o **Postman**. Os arquivos de coleção e ambiente (`.json`) devem ser importados no aplicativo para executar o fluxo de testes que valida a criação de usuários, login, acesso a rotas públicas e o bloqueio de acesso a rotas protegidas.
-
-## ✒️ Autor
-
-Desenvolvido por **[Josué Oliveira de Castro]**.
+🧪 Como Testar
+Para uma suíte de testes completa, utilize o Postman. Os arquivos de coleção e ambiente (.json) devem ser importados no aplicativo para executar o fluxo de testes que valida a criação de usuários, login, acesso a rotas públicas e o bloqueio de acesso a rotas protegidas.
