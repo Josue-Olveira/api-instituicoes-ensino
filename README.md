@@ -77,27 +77,34 @@ cd [NOME-DA-PASTA-DO-REPOSITÓRIO]
 2. Crie e Ative o Ambiente Virtual (venv)
 Este passo cria uma "caixa" isolada para as dependências do projeto.
 
-PowerShell
+##PowerShell
 
  1. Crie o ambiente
-python -m venv venv
+```python -m venv venv```
 
 # 2. Ative o ambiente
 # No Windows (PowerShell):
-.\venv\Scripts\activate
+
+```.\venv\Scripts\activate```
+
 Solução de Problemas Comuns (Windows): Se você receber um erro de UnauthorizedAccess ou "execução de scripts foi desabilitada", execute o seguinte comando uma vez para permitir a ativação e tente novamente:
 
 PowerShell
 
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+```Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process```
+
 Ao ativar, o nome (venv) deve aparecer no início da linha do seu terminal.
+
+Exemplo:
+```(venv) PS C:\Users\seu_user\api-instituicoes-ensino>```
 
 3. Instale as Dependências
 Com o ambiente (venv) ativo, instale todas as bibliotecas necessárias.
 
-Bash
+``Bash
 
-pip install -r requirements.txt
+```pip install -r requirements.txt```
+
 Solução de Problemas Comuns: Se ocorrer um erro, verifique sua conexão com a internet. Ocasionalmente, pode ser necessário instalar as "Microsoft C++ Build Tools" se alguma biblioteca exigir compilação.
 
 4. Prepare e Carregue os Dados
@@ -111,7 +118,8 @@ Execute o script de carga para popular o banco de dados:
 
 Bash
 
-python scripts/load_data.py
+```python scripts/load_data.py```
+
 Solução de Problemas Comuns: Se ocorrer um erro FileNotFoundError, confirme que o arquivo ies_data.csv está na pasta raiz e com o nome correto. Se ocorrer um KeyError, verifique se o delimitador (separador) no script corresponde ao do arquivo (vírgula ou ponto e vírgula).
 
 5. Inicie o Servidor da API
@@ -119,7 +127,8 @@ Finalmente, inicie o servidor FastAPI.
 
 Bash
 
-uvicorn main:app --reload
+```uvicorn main:app --reload```
+
 Solução de Problemas Comuns: Se você receber um erro de uvicorn: comando não encontrado, significa que seu ambiente virtual não está ativo. Volte para o Passo 2 e ative-o.
 
 O servidor estará disponível em http://127.0.0.1:8000.
