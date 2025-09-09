@@ -73,12 +73,13 @@ Abra seu terminal (PowerShell, CMD, etc.) e execute os comandos:
 ```bash
 git clone [https://docs.github.com/pt/repositories/creating-and-managing-repositories/quickstart-for-repositories](https://docs.github.com/pt/repositories/creating-and-managing-repositories/quickstart-for-repositories)
 cd [NOME-DA-PASTA-DO-REPOSITÓRIO]
+````
 2. Crie e Ative o Ambiente Virtual (venv)
 Este passo cria uma "caixa" isolada para as dependências do projeto.
 
 PowerShell
 
-# 1. Crie o ambiente
+ 1. Crie o ambiente
 python -m venv venv
 
 # 2. Ative o ambiente
