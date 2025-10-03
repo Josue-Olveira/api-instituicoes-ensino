@@ -1,4 +1,3 @@
-
 # API de Instituições de Ensino Superior - Brasil
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge&logo=python&logoColor=white)
@@ -31,7 +30,9 @@ Uma API como esta serve de alicerce para diversas aplicações práticas. Seu pr
 * **Documentação Automática:** Geração de documentação interativa com Swagger UI (`/docs`).
 * **Script de Carga de Dados:** Utilitário para popular o banco de dados a partir do arquivo CSV original.
 
-## 🛠️ Tecnologias Utilizadas
+* **Erro:** `ModuleNotFoundError: No module named '...'` ao executar um script.
+    * **Causa:** O ambiente virtual `(venv)` não está ativo.
+    * **Solução:** Ative o ambiente com `.\venv\Scripts\activate` e instale as dependências com `pip install -r requirements.txt`.
 
 * **Backend:** FastAPI, Uvicorn
 * **Banco de Dados:** SQLite
@@ -41,7 +42,9 @@ Uma API como esta serve de alicerce para diversas aplicações práticas. Seu pr
 * **Processamento de Dados (Script):** Pandas
 * **Testes:** Postman
 
-## 📂 Estrutura do Projeto
+* **Erro:** `OperationalError: no such column: ...` ao executar o script de carga.
+    * **Causa:** O modelo de dados no código foi atualizado, mas o arquivo de banco de dados (`.db`) é de uma versão antiga.
+    * **Solução:** Apague o arquivo `.db` e execute o script de carga novamente para recriar o banco com a estrutura correta.
 
 /
 ├── api/
