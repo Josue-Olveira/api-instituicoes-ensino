@@ -1,3 +1,5 @@
+# Arquivo: api/routers/auth.py
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -8,6 +10,7 @@ from api.core.database import get_db
 from api.models.base import User
 from api.schemas.user import UserCreate, UserSchema
 from api.schemas.token import Token
+from api.core.security import get_current_user # <<< ADICIONE ESTA IMPORTAÇÃO
 
 router = APIRouter(
     tags=["Autenticação e Usuários"]
@@ -15,9 +18,6 @@ router = APIRouter(
 
 @router.post("/users/", response_model=UserSchema, status_code=status.HTTP_201_CREATED)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    print("\n\n--- DEBUG: RECEBIDA REQUISIÇÃO PARA CRIAR USUÁRIO ---")
-    print(f"  > Dados recebidos: email='{user.email}', password='{user.password}', role='{user.role}'")
-
     db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
         raise HTTPException(
@@ -34,41 +34,63 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    print(f"  > Usuário '{new_user.email}' salvo no DB com ID {new_user.id}")
-    print("------------------------------------------------------\n\n")
     return new_user
 
+# <<< INÍCIO DA MODIFICAÇÃO NO ENDPOINT /token >>>
 @router.post("/token", response_model=Token)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    print("\n\n--- DEBUG: RECEBIDA REQUISIÇÃO DE LOGIN (/token) ---")
-    print(f"  > Tentando login para username: '{form_data.username}' com password: '{form_data.password}'")
-
     user = db.query(User).filter(User.email == form_data.username).first()
-    if not user:
-        print("  > ERRO: Usuário não encontrado no banco de dados.")
+    if not user or not security.verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Email ou senha incorretos",
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    print(f"  > Usuário '{user.email}' encontrado no DB.")
-    
-    is_password_correct = security.verify_password(form_data.password, user.hashed_password)
-    
-    if not is_password_correct:
-        print("  > ERRO: A verificação de senha falhou.")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Email ou senha incorretos",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    
-    print("  > SUCESSO: Senha verificada corretamente. Gerando token.")
+    # Cria o access token
     access_token_expires = timedelta(minutes=security.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = security.create_access_token(
-        data={"sub": user.email, "role": user.role.value},
+        data={"sub": user.email, "role": user.role.value}, 
         expires_delta=access_token_expires
     )
-    print("----------------------------------------------------\n\n")
-    return {"access_token": access_token, "token_type": "bearer"}
+    
+    # Cria o refresh token
+    refresh_token = security.create_refresh_token(
+        data={"sub": user.email}
+    )
+    
+    return {
+        "access_token": access_token, 
+        "token_type": "bearer",
+        "refresh_token": refresh_token
+    }
+# <<< FIM DA MODIFICAÇÃO >>>
+
+
+# <<< ADICIONE O NOVO ENDPOINT ABAIXO >>>
+@router.post("/token/refresh", response_model=Token)
+def refresh_access_token(current_user: User = Depends(get_current_user)):
+    """
+    Gera um novo access token a partir de um refresh token válido.
+    O refresh token deve ser enviado no header de autorização.
+    """
+    # A dependência get_current_user já valida o refresh token.
+    # Se chegamos até aqui, o refresh token é válido.
+    # Agora, basta criar um novo access token.
+    
+    access_token_expires = timedelta(minutes=security.ACCESS_TOKEN_EXPIRE_MINUTES)
+    new_access_token = security.create_access_token(
+        data={"sub": current_user.email, "role": current_user.role.value},
+        expires_delta=access_token_expires
+    )
+
+    # Re-emitimos um novo refresh token também por segurança (opcional, mas boa prática)
+    new_refresh_token = security.create_refresh_token(
+        data={"sub": current_user.email}
+    )
+    
+    return {
+        "access_token": new_access_token,
+        "token_type": "bearer",
+        "refresh_token": new_refresh_token
+    }

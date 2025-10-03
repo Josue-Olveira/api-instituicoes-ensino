@@ -30,7 +30,9 @@ Uma API como esta serve de alicerce para diversas aplicações práticas. Seu pr
 * **Documentação Automática:** Geração de documentação interativa com Swagger UI (`/docs`).
 * **Script de Carga de Dados:** Utilitário para popular o banco de dados a partir do arquivo CSV original.
 
-## 🛠️ Tecnologias Utilizadas
+* **Erro:** `ModuleNotFoundError: No module named '...'` ao executar um script.
+    * **Causa:** O ambiente virtual `(venv)` não está ativo.
+    * **Solução:** Ative o ambiente com `.\venv\Scripts\activate` e instale as dependências com `pip install -r requirements.txt`.
 
 * **Backend:** FastAPI, Uvicorn
 * **Banco de Dados:** SQLite
@@ -40,7 +42,9 @@ Uma API como esta serve de alicerce para diversas aplicações práticas. Seu pr
 * **Processamento de Dados (Script):** Pandas
 * **Testes:** Postman
 
-## 📂 Estrutura do Projeto
+* **Erro:** `OperationalError: no such column: ...` ao executar o script de carga.
+    * **Causa:** O modelo de dados no código foi atualizado, mas o arquivo de banco de dados (`.db`) é de uma versão antiga.
+    * **Solução:** Apague o arquivo `.db` e execute o script de carga novamente para recriar o banco com a estrutura correta.
 
 /
 ├── api/
@@ -60,77 +64,42 @@ Uma API como esta serve de alicerce para diversas aplicações práticas. Seu pr
 
 ## 🚀 Como Executar o Projeto Localmente
 
-Siga os passos abaixo para configurar e executar a aplicação no seu ambiente local.
-
 ### **Pré-requisitos**
-* **Python 3.11+:** Verifique sua versão com `python --version`.
-* **Git:** Verifique sua versão com `git --version`.
+* [Python 3.11+](https://www.python.org/downloads/)
+* [Git](https://git-scm.com/downloads/)
 
-### **Guia de Instalação Detalhado**
+### **Instalação**
 
-1.  **Clone o Repositório**
+1.  **Clone o repositório:**
     ```bash
     git clone [https://docs.github.com/pt/repositories/creating-and-managing-repositories/quickstart-for-repositories](https://docs.github.com/pt/repositories/creating-and-managing-repositories/quickstart-for-repositories)
     cd [NOME-DA-PASTA-DO-REPOSITÓRIO]
     ```
 
-2.  **Crie e Ative o Ambiente Virtual (`venv`)**
-    ```powershell
-    # 1. Crie o ambiente
+2.  **Crie e ative um ambiente virtual:**
+    ```bash
+    # Windows
     python -m venv venv
-
-    # 2. Ative o ambiente (no Windows PowerShell)
     .\venv\Scripts\activate
     ```
-    Ao ativar, o nome `(venv)` deve aparecer no início da linha do seu terminal.
 
-3.  **Instale as Dependências**
-    Com o ambiente `(venv)` ativo, instale todas as bibliotecas necessárias.
+3.  **Instale as dependências:**
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Prepare e Carregue os Dados**
-    1.  **Baixe o arquivo CSV** do [portal de dados abertos](https://dados.gov.br/dados/conjuntos-dados/cadastro-de-instituicoes-de-educacao-superior).
-    2.  **Salve o arquivo na raiz do projeto** com o nome exato: `ies_data.csv`.
-    3.  **Execute o script de carga** para popular o banco de dados:
+4.  **Popule o Banco de Dados:**
+    * Baixe o arquivo `CSV` do [portal de dados abertos](https://dados.gov.br/dados/conjuntos-dados/cadastro-de-instituicoes-de-educacao-superior) e salve-o na raiz do projeto com o nome `ies_data.csv`.
+    * Execute o script de carga:
     ```bash
     python scripts/load_data.py
     ```
 
-5.  **Inicie o Servidor da API**
+5.  **Inicie o Servidor da API:**
     ```bash
     uvicorn main:app --reload
     ```
     O servidor estará disponível em `http://127.0.0.1:8000`.
-
-## ⚠️ Solução de Problemas Comuns (Troubleshooting)
-
-Caso encontre algum erro durante a instalação, consulte as soluções abaixo.
-
-* **Erro:** `'python'` ou `'git'` não é reconhecido como comando.
-    * **Causa:** O programa não está instalado ou não foi adicionado ao PATH do sistema.
-    * **Solução:** Instale o [Python](https://www.python.org/downloads/) ou o [Git](https://git-scm.com/downloads/), garantindo que a opção "Add to PATH" seja marcada durante a instalação. Reinicie o terminal após a instalação.
-
-* **Erro:** `UnauthorizedAccess` ou "execução de scripts foi desabilitada" ao ativar o `venv` no PowerShell.
-    * **Causa:** Política de segurança do PowerShell.
-    * **Solução:** Execute `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process` e tente ativar o `venv` novamente.
-
-* **Erro:** `ModuleNotFoundError: No module named '...'` ao executar um script.
-    * **Causa:** O ambiente virtual `(venv)` não está ativo.
-    * **Solução:** Ative o ambiente com `.\venv\Scripts\activate` e instale as dependências com `pip install -r requirements.txt`.
-
-* **Erro:** `FileNotFoundError: ... 'ies_data.csv'` ao executar o script de carga.
-    * **Causa:** O arquivo CSV não está na pasta raiz ou está com o nome errado.
-    * **Solução:** Confirme a localização e o nome do arquivo. No Windows, habilite a exibição de extensões de arquivo para garantir que ele não se chama `ies_data.csv.txt`.
-
-* **Erro:** `OperationalError: no such column: ...` ao executar o script de carga.
-    * **Causa:** O modelo de dados no código foi atualizado, mas o arquivo de banco de dados (`.db`) é de uma versão antiga.
-    * **Solução:** Apague o arquivo `.db` e execute o script de carga novamente para recriar o banco com a estrutura correta.
-
-* **Erro:** `'uvicorn'` não é reconhecido como comando.
-    * **Causa:** O ambiente virtual `(venv)` não está ativo.
-    * **Solução:** Ative o ambiente com `.\venv\Scripts\activate`.
 
 ## 📚 Documentação da API
 
@@ -144,4 +113,5 @@ Para uma suíte de testes completa, utilize o **Postman**. Os arquivos de coleç
 
 ## ✒️ Autor
 
-Desenvolvido por Josué Oliveira de Castro, Natan Cesário, Matheus Henrique, Danilo Teodoro, Victor Kardec.
+Desenvolvido por **[SEU NOME COMPLETO]**.
+

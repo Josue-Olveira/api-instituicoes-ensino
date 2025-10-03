@@ -1,3 +1,5 @@
+# Arquivo: api/core/security.py
+
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import JWTError, jwt
@@ -13,36 +15,33 @@ from api.schemas.token import TokenData
 SECRET_KEY = "SUA_CHAVE_SECRETA_MUITO_FORTE_E_DIFICIL_DE_ADIVINHAR"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+REFRESH_TOKEN_EXPIRE_DAYS = 7 # <<< ADICIONE ESTA LINHA: Refresh token expira em 7 dias
 
 # --- FUNÇÕES DE HASHING DE SENHA ---
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    print("\n--- DEBUG: DENTRO DE VERIFY_PASSWORD ---")
-    print(f"  > Verificando a senha plana: '{plain_password}'")
-    print(f"  > Contra a senha com hash: '{hashed_password}'")
-    result = pwd_context.verify(plain_password, hashed_password)
-    print(f"  > Resultado da verificação: {result}")
-    print("------------------------------------------\n")
-    return result
+    return pwd_context.verify(plain_password, hashed_password)
 
 def get_password_hash(password: str) -> str:
-    print("\n--- DEBUG: GERANDO HASH DA SENHA ---")
-    print(f"  > Gerando hash para a senha: '{password}'")
-    hashed = pwd_context.hash(password)
-    print(f"  > Hash gerado: '{hashed}'")
-    print("------------------------------------\n")
-    return hashed
+    return pwd_context.hash(password)
 
-# ... (O resto do arquivo create_access_token e get_current_user continua igual) ...
-# --- FUNÇÃO DE CRIAÇÃO DE TOKEN ---
+# --- FUNÇÕES DE CRIAÇÃO DE TOKEN ---
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+# <<< ADICIONE A FUNÇÃO ABAIXO >>>
+def create_refresh_token(data: dict):
+    expire = datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    to_encode = data.copy()
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
