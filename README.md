@@ -113,5 +113,5 @@ Para uma suíte de testes completa, utilize o **Postman**. Os arquivos de coleç
 
 ## ✒️ Autor
 
-Desenvolvido por **[SEU NOME COMPLETO]**.
+Desenvolvido por *Josué Oliveira, Natan Cesário, Victor Kardec, Matheus Henrique, Danilo Teodoro.
 
