@@ -144,4 +144,4 @@ Para uma suíte de testes completa, utilize o **Postman**. Os arquivos de coleç
 
 ## ✒️ Autor
 
-Desenvolvido por **[Josuè Oliveira de Castro]**.
+Desenvolvido por Josué Oliveira de Castro, Natan Cesário, Matheus Henrique, Danilo Teodoro, Victor Kardec.
